@@ -1,6 +1,6 @@
 use std::ops::*;
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Vec3(pub f32, pub f32, pub f32);
 
 impl Vec3 {
