@@ -1,3 +1,6 @@
+extern crate rand;
+use rand::Rng;
+
 use std::ops::*;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -153,6 +156,17 @@ impl DivAssign<Vec3> for Vec3 {
 impl DivAssign<f32> for Vec3 {
   fn div_assign(&mut self, t: f32) {
     *self *= 1.0 / t;
+  }
+}
+
+pub fn random_in_unit_sphere() -> Vec3 {
+  let mut rng = rand::thread_rng();
+  let unit = Vec3(1.0, 1.0, 1.0);
+  loop {
+    let p = 2.0 * Vec3(rng.gen::<f32>(), rng.gen::<f32>(), rng.gen::<f32>()) - unit;
+    if p.squared_length() < 1.0 {
+      return p;
+    }
   }
 }
 

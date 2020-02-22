@@ -17,11 +17,8 @@ use vec3::Vec3;
 fn color(r: &Ray, world: &Vec<Box<dyn Hittable>>) -> Vec3 {
     match world.hit(r, 0.0, std::f32::MAX) {
         Some(rec) => {
-            0.5 * Vec3(
-                rec.normal.x() + 1.0,
-                rec.normal.y() + 1.0,
-                rec.normal.z() + 1.0,
-            )
+            let target = rec.p + rec.normal + vec3::random_in_unit_sphere();
+            0.5 * color(&Ray::new(rec.p, target - rec.p), world)
         }
         None => {
             let unit_direction = r.direction.to_unit_vector();
