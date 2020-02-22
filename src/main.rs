@@ -15,7 +15,7 @@ use sphere::Sphere;
 use vec3::Vec3;
 
 fn color(r: &Ray, world: &Vec<Box<dyn Hittable>>) -> Vec3 {
-    match world.hit(r, 0.0, std::f32::MAX) {
+    match world.hit(r, 0.001, std::f32::MAX) {
         Some(rec) => {
             let target = rec.p + rec.normal + vec3::random_in_unit_sphere();
             0.5 * color(&Ray::new(rec.p, target - rec.p), world)
@@ -50,6 +50,7 @@ fn main() {
                 col += color(&r, &world);
             }
             col /= ns as f32;
+            col = Vec3(col.x().sqrt(), col.y().sqrt(), col.z().sqrt());
             let ir = (255.99 * col.r()) as i32;
             let ig = (255.99 * col.g()) as i32;
             let ib = (255.99 * col.b()) as i32;
