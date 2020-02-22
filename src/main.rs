@@ -4,7 +4,19 @@ mod vec3;
 use ray::Ray;
 use vec3::Vec3;
 
+fn hit_sphere(center: &Vec3, radius: f32, r: &Ray) -> bool {
+    let oc = r.origin - *center;
+    let a = r.direction.dot(r.direction);
+    let b = 2.0 * oc.dot(r.direction);
+    let c = oc.dot(oc) - radius * radius;
+    let discriminat = b * b - 4.0 * a * c;
+    discriminat > 0.0
+}
+
 fn color(r: &Ray) -> Vec3 {
+    if hit_sphere(&Vec3(0.0, 0.0, -1.0), 0.5, r) {
+        return Vec3(1.0, 0.0, 0.0);
+    }
     let unit_direction = r.direction.to_unit_vector();
     let t = 0.5 * (unit_direction.y() + 1.0);
     (1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0)
