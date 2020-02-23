@@ -170,6 +170,20 @@ pub fn random_in_unit_sphere() -> Vec3 {
   }
 }
 
+pub fn random_in_unit_disk() -> Vec3 {
+  let mut rng = rand::thread_rng();
+  loop {
+    let p = Vec3(
+      2.0 * rng.gen::<f32>() - 1.0,
+      2.0 * rng.gen::<f32>() - 1.0,
+      0.0,
+    );
+    if p.squared_length() < 1.0 {
+      return p;
+    }
+  }
+}
+
 pub fn reflect(v: Vec3, n: Vec3) -> Vec3 {
   v - 2.0 * v.dot(n) * n
 }

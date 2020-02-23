@@ -40,12 +40,18 @@ fn main() {
     let ns = 100;
     println!("P3\n{} {}\n255", nx, ny);
 
+    let look_from = Vec3(3.0, 3.0, 2.0);
+    let look_at = Vec3(0.0, 0.0, -1.0);
+    let dist_to_focus = (look_from - look_at).length();
+    let aperture = 2.0;
     let cam = Camera::new(
-        Vec3(-2.0, 2.0, 1.0),
-        Vec3(0.0, 0.0, -1.0),
+        look_from,
+        look_at,
         Vec3(0.0, 1.0, 0.0),
         20.0,
         nx as f32 / ny as f32,
+        aperture,
+        dist_to_focus,
     );
     let mut rng = rand::thread_rng();
 
