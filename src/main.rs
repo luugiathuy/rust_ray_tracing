@@ -57,11 +57,16 @@ fn main() {
     world.push(Box::new(Sphere::new(
         Vec3(1.0, 0.0, -1.0),
         0.5,
-        Box::new(Metal::new(Vec3(0.8, 0.6, 0.2), 0.0)),
+        Box::new(Metal::new(Vec3(0.8, 0.6, 0.2), 0.3)),
     )));
     world.push(Box::new(Sphere::new(
         Vec3(-1.0, 0.0, -1.0),
         0.5,
+        Box::new(Dielectric::new(1.5)),
+    )));
+    world.push(Box::new(Sphere::new(
+        Vec3(-1.0, 0.0, -1.0),
+        -0.45,
         Box::new(Dielectric::new(1.5)),
     )));
     for j in (0..ny).rev() {

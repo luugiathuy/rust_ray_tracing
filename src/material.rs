@@ -78,18 +78,35 @@ impl Dielectric {
 impl Material for Dielectric {
   fn scatter(&self, r_in: &Ray, rec: &HitRecord) -> Option<Scatter> {
     let attenuation = Vec3(1.0, 1.0, 1.0);
-    let (outward_normal, ni_over_nt) = if r_in.direction.dot(rec.normal) > 0.0 {
-      (-rec.normal, self.ref_idx)
+    let (outward_normal, ni_over_nt, cosine) = if r_in.direction.dot(rec.normal) > 0.0 {
+      let cosine = self.ref_idx * r_in.direction.dot(rec.normal) / r_in.direction.length();
+      (-rec.normal, self.ref_idx, cosine)
     } else {
-      (rec.normal, 1.0 / self.ref_idx)
+      let cosine = -r_in.direction.dot(rec.normal) / r_in.direction.length();
+      (rec.normal, 1.0 / self.ref_idx, cosine)
     };
+    let reflected = Ray::new(rec.p, reflect(r_in.direction, rec.normal));
     let scattered = match refract(r_in.direction, outward_normal, ni_over_nt) {
-      Some(refracted) => Ray::new(rec.p, refracted),
-      None => Ray::new(rec.p, reflect(r_in.direction, rec.normal)),
+      Some(refracted_dir) => {
+        let reflect_prob = schlick(cosine, self.ref_idx);
+        if rand::random::<f32>() < reflect_prob {
+          reflected
+        } else {
+          Ray::new(rec.p, refracted_dir)
+        }
+      }
+      None => reflected,
     };
     Some(Scatter {
       scattered,
       attenuation,
     })
   }
+}
+
+/// Christophe Schlick's approximation is a formula for approximating the contribution of the Fresnel factor in the specular reflection of light from a non-conducting interface
+fn schlick(cosine: f32, ref_idx: f32) -> f32 {
+  let r0 = (1.0 - ref_idx) / (1.0 + ref_idx);
+  let r0 = r0 * r0;
+  r0 + (1.0 - r0) * (1.0 - cosine).powi(5)
 }
