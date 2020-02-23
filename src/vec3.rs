@@ -170,6 +170,10 @@ pub fn random_in_unit_sphere() -> Vec3 {
   }
 }
 
+pub fn reflect(v: Vec3, n: Vec3) -> Vec3 {
+  v - 2.0 * v.dot(n) * n
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -300,5 +304,13 @@ mod tests {
     assert_eq!(0.25, v2.x());
     assert_eq!(0.5, v2.y());
     assert_eq!(0.75, v2.z());
+  }
+
+  #[test]
+  fn reflect_vec() {
+    let v = Vec3(-1.0, -1.0, 0.0);
+    let n = Vec3(0.0, 1.0, 0.0);
+    let r = reflect(v, n);
+    assert_eq!(Vec3(-1.0, 1.0, 0.0), r);
   }
 }

@@ -1,11 +1,13 @@
+use super::material::Material;
 use super::ray::Ray;
 use super::vec3::Vec3;
 
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct HitRecord {
+#[derive(Clone, Copy)]
+pub struct HitRecord<'obj> {
   pub t: f32,
   pub p: Vec3,
   pub normal: Vec3,
+  pub material: &'obj dyn Material,
 }
 
 pub trait Hittable {
