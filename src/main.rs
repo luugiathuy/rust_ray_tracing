@@ -57,12 +57,12 @@ fn main() {
     world.push(Box::new(Sphere::new(
         Vec3(1.0, 0.0, -1.0),
         0.5,
-        Box::new(Metal::new(Vec3(0.8, 0.6, 0.2))),
+        Box::new(Metal::new(Vec3(0.8, 0.6, 0.2), 1.0)),
     )));
     world.push(Box::new(Sphere::new(
         Vec3(-1.0, 0.0, -1.0),
         0.5,
-        Box::new(Metal::new(Vec3(0.8, 0.8, 0.8))),
+        Box::new(Metal::new(Vec3(0.8, 0.8, 0.8), 0.3)),
     )));
     for j in (0..ny).rev() {
         for i in 0..nx {
