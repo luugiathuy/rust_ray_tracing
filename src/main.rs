@@ -1,6 +1,5 @@
 extern crate rand;
 use rand::Rng;
-use std::f32;
 
 mod camera;
 mod hittable;
@@ -41,20 +40,40 @@ fn main() {
     let ns = 100;
     println!("P3\n{} {}\n255", nx, ny);
 
-    let cam = Camera::new(90.0, nx as f32 / ny as f32);
+    let cam = Camera::new(
+        Vec3(-2.0, 2.0, 1.0),
+        Vec3(0.0, 0.0, -1.0),
+        Vec3(0.0, 1.0, 0.0),
+        90.0,
+        nx as f32 / ny as f32,
+    );
     let mut rng = rand::thread_rng();
-    let r = f32::cos(f32::consts::FRAC_PI_4);
 
     let mut world: Vec<Box<dyn Hittable>> = Vec::new();
     world.push(Box::new(Sphere::new(
-        Vec3(-r, 0.0, -1.0),
-        r,
-        Box::new(Lambertian::new(Vec3(0.0, 0.0, 1.0))),
+        Vec3(0.0, 0.0, -1.0),
+        0.5,
+        Box::new(Lambertian::new(Vec3(0.1, 0.2, 0.5))),
     )));
     world.push(Box::new(Sphere::new(
-        Vec3(r, 0.0, -1.0),
-        r,
-        Box::new(Lambertian::new(Vec3(1.0, 0.0, 0.0))),
+        Vec3(0.0, -100.5, -1.0),
+        100.0,
+        Box::new(Lambertian::new(Vec3(0.8, 0.8, 0.0))),
+    )));
+    world.push(Box::new(Sphere::new(
+        Vec3(1.0, 0.0, -1.0),
+        0.5,
+        Box::new(Metal::new(Vec3(0.8, 0.6, 0.2), 0.3)),
+    )));
+    world.push(Box::new(Sphere::new(
+        Vec3(-1.0, 0.0, -1.0),
+        0.5,
+        Box::new(Dielectric::new(1.5)),
+    )));
+    world.push(Box::new(Sphere::new(
+        Vec3(-1.0, 0.0, -1.0),
+        -0.45,
+        Box::new(Dielectric::new(1.5)),
     )));
     for j in (0..ny).rev() {
         for i in 0..nx {
