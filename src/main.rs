@@ -44,7 +44,7 @@ fn main() {
         Vec3(-2.0, 2.0, 1.0),
         Vec3(0.0, 0.0, -1.0),
         Vec3(0.0, 1.0, 0.0),
-        90.0,
+        20.0,
         nx as f32 / ny as f32,
     );
     let mut rng = rand::thread_rng();
